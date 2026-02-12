@@ -145,11 +145,42 @@ All code, including data loading, training, evaluation, and inference, is contai
 
 📌 Notes
 
-Hugging Face Trainer API was not used; training was implemented using raw PyTorch to clearly demonstrate the fine-tuning process.
+Approach:
 
-A subset of the dataset was used for faster experimentation.
+Fine-tuned a pre-trained BERT-based model (bert-base-uncased) on the PubMed 200k RCT dataset for multi-class medical abstract sentence classification.
+Each sentence was tokenized using the BERT tokenizer and mapped to one of five labels: BACKGROUND, OBJECTIVE, METHODS, RESULTS, CONCLUSIONS.
 
-The project demonstrates how pretrained language models can be adapted to domain-specific tasks using transfer learning.
+Training was done using PyTorch only, without using Hugging Face Trainer APIs, to explicitly demonstrate the fine-tuning process including:
+
+Forward pass
+
+Loss computation
+
+Backpropagation
+
+Optimization using AdamW
+
+Evaluated the model using Accuracy, Precision, Recall, F1-score (weighted), and a Confusion Matrix.
+
+Assumptions:
+
+The dataset sentences are independent and can be classified without requiring surrounding context.
+
+The provided labels accurately represent the rhetorical role of each sentence in a medical abstract.
+
+A reduced subset of the dataset was sufficient to demonstrate effective fine-tuning within reasonable training time and hardware constraints.
+
+Pre-trained BERT embeddings are suitable for biomedical text classification without domain-specific pretraining (e.g., BioBERT).
+
+Observations:
+
+The model achieved strong performance despite limited fine-tuning, showing that transfer learning is effective for structured medical text.
+
+Sentences with explicit keywords (e.g., “patients”, “results”, “conclusion”) were easier for the model to classify.
+
+Some ambiguity was observed between BACKGROUND and OBJECTIVE classes, likely due to overlapping language patterns.
+
+Confidence scores were generally higher for clearly structured scientific statements and lower for shorter or more generic sentences.
 
 Conclusion
 
